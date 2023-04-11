@@ -1,4 +1,4 @@
-![](https://i.imgur.com/zGzXYfT.jpg)
+![](https://user-images.githubusercontent.com/101481663/231196842-0594fd8d-9cc4-485e-96f4-d2c8a7718046.jpg)
 
 
 __Audit Firm__: Solidity Lab
