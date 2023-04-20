@@ -69,11 +69,6 @@ The auditing process pays special attention to the following considerations:
 | [Low](#Low)                 | Minor deviation from best practices.                                                         |
 | [Gas](#Gas)                 | Gas Optimization
 
-
-# Protocol Graph (Optional)
-
-IMAGE
-
 # Findings & Resolutions
 
 | ID      | Title                                                                                     | Category            | Severity | Status  |
