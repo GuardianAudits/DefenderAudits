@@ -13,6 +13,8 @@ __DIVA Protocol__ engaged Solidity Lab to review the security of its Smart Contr
 
 Notice that the examined smart contracts are not resistant to external/internal exploit. For a detailed understanding of risk severity, source code vulnerability, and potential attack vectors, refer to the complete audit report below.
 
+*Note that each team's audit referred to the repository at https://github.com/GuardianAudits/DivaAudit/tree/main/diva-contracts/contracts, however the DIVA Protocol team has moved their contracts to a public repository without public deploy scripts, located at https://github.com/divaprotocol/diva-protocol-v1. It has been verified that these contracts correspond with the remediated contracts from the conducted audit.
+
 
 
 # Project Overview
