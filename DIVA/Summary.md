@@ -29,11 +29,11 @@ Notice that the examined smart contracts are not resistant to external/internal 
 | Audit Methodology | Static Analysis, Manual Review |
 
 
-| Vulnerability Level | Total | Resolved | Declined | Acknowledged | Partially Resolved | Resolved |
-|---------------------|-------|---------|----------|--------------|--------------------|----------|
-| [Critical](#Critical)| 0     | 0       | 0        | 0            | 0                  | 0        |
-| [High](#High)        | 4     | 4       | 0        | 0            | 0                  | 0        |
-| [Medium](#Medium)    | 5     | 5       | 0        | 0            | 0                  | 0        |
+| Vulnerability Level | Total | Resolved | Declined | Acknowledged | Partially Resolved |
+|---------------------|-------|---------|----------|--------------|--------------------|
+| [Critical](#Critical)| 0     | 0       | 0        | 0            | 0                  |
+| [High](#High)        | 4     | 4       | 0        | 0            | 0                  |
+| [Medium](#Medium)    | 5     | 5       | 0        | 0            | 0                  |
 
 
 # Audit Scope & Methodology
