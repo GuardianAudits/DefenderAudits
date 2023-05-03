@@ -121,8 +121,8 @@ The auditing process pays special attention to the following considerations:
 | ------------ | ------------------------------------------------------------------------------------------------ | ------------- | ------- |
 | [H-01](#H01) | Wrong implementation of EVMCall in DIVAOwnershipSecondary                                        | High          | Resolved |
 | [H-02](#H02) | Funds could be stuck in DIVADevelopmentFund                                                      | High          | Resolved |
-| [H-03](#H03) | Round-down calculation is used to calculate the `_collateralAmountRemovedNetMaker` which can be abused by taker to take all the removed liquidity from maker | Steal fund        | High | Resolved |
-| [H-04](#H04) | `_createContingentPoolLib` is suspicious of the reorg attack                                                                                                 | Steal fund        | High     | Resolved |
+| [H-03](#H03) | Round-down calculation is used to calculate the `_collateralAmountRemovedNetMaker` which can be abused by taker to take all the removed liquidity from maker | High | Resolved |
+| [H-04](#H04) | `_createContingentPoolLib` is suspicious of the reorg attack                                                                                                 | High     | Resolved |
 | [M-01](#M01) | Wrong protocol fee recipient when withdrawing liquidity                                          | Medium        | Resolved |
 | [M-02](#M02) | PreviousFallbackDataProvider won't have incentive to provide accurate value                      | Medium        | Resolved |
 | [M-03](#M03) | Fee-on-Transfer tokens used as collateral will make a pool undercollateralized                   | Medium        | Resolved |
