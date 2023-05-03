@@ -9,7 +9,7 @@ __Prepared By:__ Owen Thurm
 
 <br />
 
-__DIVA Protocol__ engaged Solidity Lab to review the security of its Smart Contract system. From __the 26th of March__ to __the 20th of April__, __4__ teams of __12__ total auditors reviewed the source code in scope. All findings have been recorded in the following report.
+__DIVA Protocol__ engaged Solidity Lab to review the security of its Smart Contract system. From __the 26th of March__ to __the 20th of April__, __4__ teams of __12__ total auditors reviewed the source code in scope. All Critical/High/Medium findings have been recorded in the following report, for Low/Informational/Gas findings refer to the individual team reports in this directory.
 
 Notice that the examined smart contracts are not resistant to external/internal exploit. For a detailed understanding of risk severity, source code vulnerability, and potential attack vectors, refer to the complete audit report below.
 
