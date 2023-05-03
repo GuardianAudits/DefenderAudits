@@ -40,10 +40,62 @@ Notice that the examined smart contracts are not resistant to external/internal 
 
 ## Scope
 
-| ID | File      | Checksum                              |
-|---------|------------|---------------------------------------|
-| A      | diva-contracts/contracts/* |-  |
-| B      | oracles/contracts/* | - |
+| File                                                               | nSLOC    | Complex. Score |
+| ------------------------------------------------------------------ | -------- | -------------- |
+| oracles/contracts/DIVAOracleTellor.sol                             | 480      | 344            |
+| diva-contracts/contracts/DIVADevelopmentFund.sol                   | 145      | 123            |
+| diva-contracts/contracts/DIVAOwnershipMain.sol                     | 128      | 86             |
+| diva-contracts/contracts/DIVAOwnershipSecondary.sol                | 114      | 35             |
+| diva-contracts/contracts/DIVAToken.sol                             | 12       | 5              |
+| diva-contracts/contracts/Diamond.sol                               | 118      | 117            |
+| diva-contracts/contracts/PermissionedPositionToken.sol             | 58       | 41             |
+| diva-contracts/contracts/PositionToken.sol                         | 39       | 28             |
+| diva-contracts/contracts/PositionTokenFactory.sol                  | 57       | 44             |
+| diva-contracts/contracts/UsingTellor.sol                           | 14       | 6              |
+| diva-contracts/contracts/facets/ClaimFacet.sol                     | 69       | 44             |
+| diva-contracts/contracts/facets/DiamondCutFacet.sol                | 10       | 7              |
+| diva-contracts/contracts/facets/DiamondLoupeFacet.sol              | 43       | 36             |
+| diva-contracts/contracts/facets/EIP712AddFacet.sol                 | 47       | 22             |
+| diva-contracts/contracts/facets/EIP712CancelFacet.sol              | 77       | 58             |
+| diva-contracts/contracts/facets/EIP712CreateFacet.sol              | 119      | 33             |
+| diva-contracts/contracts/facets/EIP712RemoveFacet.sol              | 47       | 22             |
+| diva-contracts/contracts/facets/GetterFacet.sol                    | 135      | 79             |
+| diva-contracts/contracts/facets/GovernanceFacet.sol                | 253      | 105            |
+| diva-contracts/contracts/facets/LiquidityFacet.sol                 | 89       | 47             |
+| diva-contracts/contracts/facets/PoolFacet.sol                      | 35       | 33             |
+| diva-contracts/contracts/facets/SettlementFacet.sol                | 328      | 131            |
+| diva-contracts/contracts/facets/TipFacet.sol                       | 42       | 29             |
+| diva-contracts/contracts/libraries/LibDIVA.sol                     | 499      | 196            |
+| diva-contracts/contracts/libraries/LibDIVAStorage.sol              | 86       | 16             |
+| diva-contracts/contracts/libraries/LibDiamond.sol                  | 240      | 116            |
+| diva-contracts/contracts/libraries/LibDiamondStorage.sol           | 26       | 6              |
+| diva-contracts/contracts/libraries/LibEIP712.sol                   | 558      | 733            |
+| diva-contracts/contracts/libraries/LibEIP712Storage.sol            | 17       | 6              |
+| diva-contracts/contracts/libraries/LibOwnership.sol                | 21       | 8              |
+| diva-contracts/contracts/libraries/SafeDecimalMath.sol             | 14       | 7              |
+| diva-contracts/contracts/interfaces/IClaim.sol                     | 25       | 9              |
+| diva-contracts/contracts/interfaces/IDIVADevelopmentFund.sol       | 19       | 30             |
+| diva-contracts/contracts/interfaces/IDIVAOwnershipMain.sol         | 27       | 33             |
+| diva-contracts/contracts/interfaces/IDIVAOwnershipSecondary.sol    | 10       | 11             |
+| diva-contracts/contracts/interfaces/IDIVAOwnershipShared.sol       | 3        | 3              |
+| diva-contracts/contracts/interfaces/IDiamondCut.sol                | 14       | 3              |
+| diva-contracts/contracts/interfaces/IDiamondLoupe.sol              | 7        | 9              |
+| diva-contracts/contracts/interfaces/IEIP712Add.sol                 | 15       | 5              |
+| diva-contracts/contracts/interfaces/IEIP712Cancel.sol              | 5        | 13             |
+| diva-contracts/contracts/interfaces/IEIP712Create.sol              | 15       | 5              |
+| diva-contracts/contracts/interfaces/IEIP712Remove.sol              | 15       | 5              |
+| diva-contracts/contracts/interfaces/IERC165.sol                    | 3        | 3              |
+| diva-contracts/contracts/interfaces/IGetter.sol                    | 5        | 45             |
+| diva-contracts/contracts/interfaces/IGovernance.sol                | 90       | 21             |
+| diva-contracts/contracts/interfaces/ILiquidity.sol                 | 31       | 9              |
+| diva-contracts/contracts/interfaces/IPermissionedPositionToken.sol | 4        | 15             |
+| diva-contracts/contracts/interfaces/IPool.sol                      | 11       | 5              |
+| diva-contracts/contracts/interfaces/IPositionToken.sol             | 4        | 13             |
+| diva-contracts/contracts/interfaces/IPositionTokenFactory.sol      | 3        | 5              |
+| diva-contracts/contracts/interfaces/ISettlement.sol                | 53       | 13             |
+| diva-contracts/contracts/interfaces/ITellor.sol                    | 3        | 3              |
+| diva-contracts/contracts/interfaces/ITip.sol                       | 14       | 5              |
+| **Totals**                                                         | **4296** | **2826**       |
 
 
 ## Methodology
