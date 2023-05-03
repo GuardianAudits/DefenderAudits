@@ -11,7 +11,7 @@ __Delivery Date:__ April 20th, 2023
 
 <br />
 
-__Client Firm__ engaged Solidity Lab to review the security of its Smart Contract system. From __the 26th of March__ to __the 20th of April__, a team of __3__ auditors reviewed the source code in scope. All findings have been recorded in the following report.
+__DIVA Protocol__ engaged Solidity Lab to review the security of its Smart Contract system. From __the 26th of March__ to __the 20th of April__, a team of __3__ auditors reviewed the source code in scope. All findings have been recorded in the following report.
 
 Notice that the examined smart contracts are not resistant to external/internal exploit. For a detailed understanding of risk severity, source code vulnerability, and potential attack vectors, refer to the complete audit report below.
 
@@ -31,12 +31,12 @@ Notice that the examined smart contracts are not resistant to external/internal 
 | Audit Methodology | Static Analysis, Manual Review |
 
 
-| Vulnerability Level | Total | Pending | Declined | Acknowledged | Partially Resolved | Resolved |
+| Vulnerability Level | Total | Resolved | Declined | Acknowledged | Partially Resolved | Resolved |
 |---------------------|-------|---------|----------|--------------|--------------------|----------|
-| [Critical](#Critical)| 1     | 1       | 0        | 0            | 0                  | 0        |
-| [High](#High)        | 1     | 1       | 0        | 0            | 0                  | 0        |
-| [Medium](#Medium)    | 3     | 3       | 0        | 0            | 0                  | 0        |
-| [Low](#Low)          | 1     | 1       | 0        | 0            | 0                  | 0        |
+| [Critical](#Critical)| 0     | 0       | 0        | 0            | 0                  | 0        |
+| [High](#High)        | 0     | 0       | 0        | 0            | 0                  | 0        |
+| [Medium](#Medium)    | 1     | 1       | 0        | 0            | 0                  | 0        |
+| [Low](#Low)          | 4     | 4       | 0        | 0            | 0                  | 0        |
 | [Gas](#Gas)          | 11     | 11       | 0        | 0            | 0                  | 0        |
 
 
@@ -73,130 +73,19 @@ The auditing process pays special attention to the following considerations:
 
 | ID      | Title                                                                                     | Category            | Severity | Status  |
 |-------|-------------------------------------------------------------------------------------------|---------------------|----------|---------|
-| [C-01](#C01)  | Centralization Risk in token supply can result in users being unable to remove DIVA owner                                     | Centralization                 | Critical     | Pending |
-| [H-01](#H01)  | User Will Lose Ether Which Was Sent to The Diamond Contract                                     | Loss of funds                 | High     | Pending |
-| [M-01](#M01)  | Voting for a different owner can become impossible                                     | Logic                 | Medium     | Pending |
-| [M-02](#M02)  | No functionality to deal with unclaimed election can result in Front run attacks                                   | Documentation                 | Medium     | Pending |
-| [M-03](#M03)  | `_getActualTakerFillableAmount` Will Return `_takerCollateralAmount - _offerInfo.takerFilledAmount` Even If The Order Is Not Fillable                                   | Logic | Medium | Pending 
-| [L-01](#L01)  | Diamond facet upgrade                   | Logic            | Low     | Pending |
-
-
-
-
-
-## <a id="Critical"></a>Critical
-
-
-### <a id="C01"></a> C-01 Centralization Risk in token supply can result in users being unable to remove DIVA owner 
-
-https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/DIVAOwnershipMain.sol#L100-L114
-
-#### Description:
-The DIVA token has a fixed supply of 100m (verified by dev)
-
-Shown here: 
-
-https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/DIVAToken.sol#L1-L15
-
-Also consider the following code: 
-
-
-```
-// Confirm that `msg.sender` has strictly more support than the current owner
-        if (_candidateToStakedAmount[msg.sender] <= _candidateToStakedAmount[_owner]) {
-            revert InsufficientStakingSupport();
-        }
-```
-
-https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/DIVAOwnershipMain.sol#L111-L114
-
-A user cannot start an election unless he/she has more staked token support than the current DIVAowner 
-
-This presents some problems, as it is very possible that a malicious whale DIVA owner can own enough of the circulating supply so that if the DIVA owner staked his tokens, no one would be able to challenge him in an election.
-
-Considering the distribution model of the DIVA token, this is feasible as the owner does not need to own 51% of the total supply to pull this off 
-
-
-
-
-
-#### Recommendation:
-
-Consider loosening the requirements of starting an election so that a whale can still lose their position even if they control most of the circulating supply 
-
-
-
-
-
-
-#### Resolution:
-
-
-----
-
-
-## <a id="High"></a> High
-
-### <a id="H01"></a> H-01 User Will Lose Ether Which Was Sent to The Diamond Contract
-
-#### Description:
-
-Ether sent by a user here https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/Diamond.sol#L191 would be locked/lost forever i.e. their is no functionality to withdraw the sent amount neither by the user nor the owner. 
-
-#### Recommendation:
-
-Since their is no use of native currency on the Diamond contract , consider removing the receive function altogether.
-
-
------------------
-
-
-
-## <a id="High"></a> Medium
-
-### <a id="M01"></a> M-01  Voting for a different owner can become impossible 
-
-https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/DIVAOwnershipMain.sol
-
-
-#### Description:
-As stated in the documentation, the stake function is used to 'vote' for a new protocol owner, and the documentation specifies that the minimum staking period is 7 days. This means that if a user stakes, for example, 50 DIVA tokens, they can only retrieve them after 7 days. If they change their mind and no longer wish to vote for the owner. To verify that the minimum staking period has passed, line 150 implements a check with the formula: `uint _minStakingPeriodEnd = _voterToTimestampLastStake[msg.sender] + _minStakingPeriod`. However, suppose the same user stakes another 50 tokens, for example, 3 days after staking the initial 50 tokens. In that case, the mapping will update to a minimum unstaking period of 10 days from the initial staking date, instead of the required 7 days according to the protocol docs. So the user will not be able to unstake his first staked amount after 7 days but after 10.
-
-#### Recommendation:
-Implement a logic that tracks the days for “each stake” of each user.
-
-
-#### Resolution:
-
-
-
+| [M-01](#M01)  | `_getActualTakerFillableAmount` Will Return `_takerCollateralAmount - _offerInfo.takerFilledAmount` Even If The Order Is Not Fillable                                   | Logic | Medium | Resolved 
+| [L-01](#L01)  | Diamond facet upgrade                   | Logic            | Low     | Resolved |
+| [L-02](#L02)  | Centralization Risk in token supply can result in users being unable to remove DIVA owner                                     | Centralization                 | Low     | Acknowledged |
+| [L-03](#L03)  | User Will Lose Ether Which Was Sent to The Diamond Contract                                     | Loss of funds                 | Low     | Resolved |
+| [L-04](#L04)  | Voting for a different owner can become impossible                 | Documentation            | Low     | Acknowledged |
 
 
 ## <a id="Medium"></a> Medium
 
-### <a id="M02"></a> M-02  No functionality to deal with unclaimed election can result in Front run attacks
 
-https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/DIVAOwnershipMain.sol#L129-L146
+## <a id="Medium"></a> Medium
 
-#### Description:
-
-Following the docs: 
-
-``In theory, the second or third placed candidates could become protocol owners if the winner does not submit their
-ownership claim during the respective period. In practice though, we anticipate the election winner to always submit their
-ownership claim.``
-
-However, there doesn't seem to be any functionality for second or third place candidates to become protocol owner. This means that in the event that ownership is not claimed, the claiming ownership will not work properly as stakers can front run each other to either pull back funds and/or add funds for a candidate
-
-
-#### Recommendation:
-Add logic to allow second and third place candidates to become protocol owners in the event that the first place candidates does not submit his claim
-
-#### Resolution:
-
-
-
-### <a id="M03"></a> M-03 `_getActualTakerFillableAmount` Will Return `_takerCollateralAmount - _offerInfo.takerFilledAmount` Even If The Order Is Not Fillable
+### <a id="M01"></a> M-01 `_getActualTakerFillableAmount` Will Return `_takerCollateralAmount - _offerInfo.takerFilledAmount` Even If The Order Is Not Fillable
 
 #### Description:
 
@@ -242,6 +131,72 @@ We recommend upgrading the contracts in a single transaction, or making the fall
 
 
 
+### <a id="L02"></a> L-02 Centralization Risk in token supply can result in users being unable to remove DIVA owner 
+
+https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/DIVAOwnershipMain.sol#L100-L114
+
+#### Description:
+The DIVA token has a fixed supply of 100m (verified by dev)
+
+Shown here: 
+
+https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/DIVAToken.sol#L1-L15
+
+Also consider the following code: 
+
+
+```
+// Confirm that `msg.sender` has strictly more support than the current owner
+        if (_candidateToStakedAmount[msg.sender] <= _candidateToStakedAmount[_owner]) {
+            revert InsufficientStakingSupport();
+        }
+```
+
+https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/DIVAOwnershipMain.sol#L111-L114
+
+A user cannot start an election unless he/she has more staked token support than the current DIVAowner 
+
+This presents some problems, as it is very possible that a malicious whale DIVA owner can own enough of the circulating supply so that if the DIVA owner staked his tokens, no one would be able to challenge him in an election.
+
+Considering the distribution model of the DIVA token, this is feasible as the owner does not need to own 51% of the total supply to pull this off 
+
+
+
+
+
+#### Recommendation:
+
+Consider loosening the requirements of starting an election so that a whale can still lose their position even if they control most of the circulating supply 
+
+
+---------------
+
+
+### <a id="L03"></a> L-03 User Will Lose Ether Which Was Sent to The Diamond Contract
+
+#### Description:
+
+Ether sent by a user here https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/Diamond.sol#L191 would be locked/lost forever i.e. their is no functionality to withdraw the sent amount neither by the user nor the owner. 
+
+#### Recommendation:
+
+Since their is no use of native currency on the Diamond contract , consider removing the receive function altogether.
+
+
+-----------------
+
+
+
+### <a id="L04"></a> L-04  Voting for a different owner can become impossible 
+
+https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/DIVAOwnershipMain.sol
+
+
+#### Description:
+As stated in the documentation, the stake function is used to 'vote' for a new protocol owner, and the documentation specifies that the minimum staking period is 7 days. This means that if a user stakes, for example, 50 DIVA tokens, they can only retrieve them after 7 days. If they change their mind and no longer wish to vote for the owner. To verify that the minimum staking period has passed, line 150 implements a check with the formula: `uint _minStakingPeriodEnd = _voterToTimestampLastStake[msg.sender] + _minStakingPeriod`. However, suppose the same user stakes another 50 tokens, for example, 3 days after staking the initial 50 tokens. In that case, the mapping will update to a minimum unstaking period of 10 days from the initial staking date, instead of the required 7 days according to the protocol docs. So the user will not be able to unstake his first staked amount after 7 days but after 10.
+
+#### Recommendation:
+Implement a logic that tracks the days for “each stake” of each user.
 
 
 
@@ -264,10 +219,10 @@ and
 https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/DIVAOwnershipMain.sol#L80-L94
 
 
-### <a id="I02"></a> I-02 revokePendingFeesUpdate Won't Work When There Is Only One Element In The Array
+### <a id="I02"></a> I-02 revokeResolvedFeesUpdate Won't Work When There Is Only One Element In The Array
 
 It is not mentioned in the comments nor in the docs that in
-the function revokePendingFeesUpdate  https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/facets/GovernanceFacet.sol#L243 
+the function revokeResolvedFeesUpdate  https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/facets/GovernanceFacet.sol#L243 
 the gs.fees array would have atleast one value after deployment which can't be challenged , because if it is assumed that this is not the case , then at L260 we perform a pop action which would make the array empty(assuming only one element)and then L263 would always revert due to underflow. In short first element's fee update won't be revoked.
 
 ### <a id="I03"></a> I-03 Functions , Variables And Parameters In Snake Case
@@ -609,9 +564,9 @@ File: GovernanceFacet.sol
 
 227:     function unpauseReturnCollateral() external override onlyOwner {
 
-243:     function revokePendingFeesUpdate() external override onlyOwner {
+243:     function revokeResolvedFeesUpdate() external override onlyOwner {
 
-377:     function revokePendingTreasuryUpdate() external override onlyOwner {
+377:     function revokeResolvedTreasuryUpdate() external override onlyOwner {
 
 ```
 

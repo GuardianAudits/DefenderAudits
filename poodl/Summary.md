@@ -5,6 +5,8 @@ __Audit Firm__: Solidity Lab
 
 __Client Firm__: Poodl Tech
 
+__Prepared By:__ Owen Thurm
+
 <br />
 
 __PoodlTech__ engaged Solidity Lab to review the security of its Smart Contract system. From __February  25th, 2023__ to __March 7th, 2023__, __6__ teams of 20 total auditors reviewed the source code in scope. All findings have been recorded in the following report.

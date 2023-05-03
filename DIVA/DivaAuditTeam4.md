@@ -29,13 +29,13 @@ Notice that the examined smart contracts are not resistant to external/internal 
 | Audit Methodology | Static Analysis, Manual Review |
 
 
-| Vulnerability Level             | Total | Pending | Declined | Acknowledged | Partially Resolved | Resolved |
+| Vulnerability Level             | Total | Resolved | Declined | Acknowledged | Partially Resolved | Resolved |
 | ------------------------------- | ----- | ------- | -------- | ------------ | ------------------ | -------- |
-| [Critical](#Critical)           | 1     | 0       | 0        | 0            | 0                  | 0        |
-| [High](#High)                   | 1     | 0       | 0        | 0            | 0                  | 0        |
-| [Medium](#Medium)               | 6     | 0       | 0        | 0            | 0                  | 0        |
-| [Low](#Low)                     | 9     | 0       | 0        | 0            | 0                  | 0        |
-| [Informational](#Informational) | 11    | 0       | 0        | 0            | 0                  | 0        |
+| [Critical](#Critical)           | 0     | 0       | 0        | 0            | 0                  | 0        |
+| [High](#High)                   | 2     | 2       | 0        | 0            | 0                  | 0        |
+| [Medium](#Medium)               | 4     | 4       | 0        | 0            | 0                  | 0        |
+| [Low](#Low)                     | 11    | 11       | 0        | 0            | 0                  | 0        |
+| [Informational](#Informational) | 11    | 11       | 0        | 0            | 0                  | 0        |
 
 
 # Audit Scope & Methodology
@@ -122,39 +122,39 @@ The auditing process pays special attention to the following considerations:
 
 | ID           | Title                                                                                            | Severity      | Status  |
 | ------------ | ------------------------------------------------------------------------------------------------ | ------------- | ------- |
-| [C-01](#C01) | Wrong implementation of EVMCall in DIVAOwnershipSecondary                                        | Critical      | Pending |
-| [H-01](#H01) | Funds could be stuck in DIVADevelopmentFund                                                      | High          | Pending |
-| [M-01](#M01) | Wrong protocol fee recipient when withdrawing liquidity                                          | Medium        | Pending |
-| [M-02](#M02) | Neither the long nor the short token can be conditionally burned                                 | Medium        | Pending |
-| [M-03](#M03) | PreviousFallbackDataProvider won't have incentive to provide accurate value                      | Medium        | Pending |
-| [M-04](#M04) | Fee-on-Transfer tokens used as collateral will make a pool undercollateralized                   | Medium        | Pending |
-| [M-05](#M05) | DoS in `_calcPayoffs` function when calculating big numbers                                      | Medium        | Pending |
-| [M-06](#M06) | Trapped ETH in the Diamond contract                                                              | Medium        | Pending |
-| [L-01](#L01) | Update openzeppelin NPM dependencies in package.json                                             | Low           | Pending |
-| [L-02](#L02) | Missing boundries for _maxDIVARewardUSD in DIVAOracleTellor                                      | Low           | Pending |
-| [L-03](#L03) | Fee-on-transfer tokens will get stuck in Development Fund                                        | Low           | Pending |
-| [L-04](#L04) | Wrong implementation of EIP-2535 in `LibDiamond` library                                         | Low           | Pending |
-| [L-05](#L05) | Missing important data in events                                                                 | Low           | Pending |
-| [L-06](#L06) | Don't allow setting owner to address(0) in `DIVAOwnershipSecondary`                              | Low           | Pending |
-| [L-07](#L07) | Add a minimum deposit amount in `DIVADevelopmentFund`                                            | Low           | Pending |
-| [L-08](#L08) | Missing possibility of removing deposits that are fully paid in DIVADevelopmentFund              | Low           | Pending |
-| [L-09](#L09) | DiamondCutFacet should close the Diamond after getting called                                    | Low           | Pending |
-| [I-01](#I01) | Missing validation on deployment of DIVAOracleTellor                                             | Informational | Pending |
-| [I-02](#I02) | Pragma version                                                                                   | Informational | Pending |
-| [I-03](#I03) | Use specific imports instead of just a global import in DIVAOracleTellor                         | Informational | Pending |
-| [I-04](#I04) | Useless `require` statement at `_diamondCut` function                                            | Informational | Pending |
-| [I-05](#I05) | Missing function to query for `_permissionedPositionTokenImplementation` in PositionTokenFactory | Informational | Pending |
-| [I-06](#I06) | Add missing variable checks in constructor                                                       | Informational | Pending |
-| [I-07](#I07) | Consider resetting values after a new Owner has claimed the ownership in DIVAOwnershipMain       | Informational | Pending |
-| [I-08](#I08) | Missing NatSpec @inheritdoc in implementations                                                   | Informational | Pending |
-| [I-09](#I09) | Change immutable to constant if a fixed value is used                                            | Informational | Pending |
-| [I-10](#I10) | Missing NatSpec in diva-contracts Interfaces                                                     | Informational | Pending |
-| [I-11](#I11) | Misleading Typo in comment                                                                       | Informational | Pending |
+| [H-01](#H01) | Wrong implementation of EVMCall in DIVAOwnershipSecondary                                        | High          | Resolved |
+| [H-02](#H02) | Funds could be stuck in DIVADevelopmentFund                                                      | High          | Resolved |
+| [M-01](#M01) | Wrong protocol fee recipient when withdrawing liquidity                                          | Medium        | Resolved |
+| [M-02](#M02) | PreviousFallbackDataProvider won't have incentive to provide accurate value                      | Medium        | Resolved |
+| [M-03](#M03) | Fee-on-Transfer tokens used as collateral will make a pool undercollateralized                   | Medium        | Resolved |
+| [M-04](#M04) | DoS in `_calcPayoffs` function when calculating big numbers                                      | Medium        | Resolved |
+| [L-01](#L01) | Update openzeppelin NPM dependencies in package.json                                             | Low           | Resolved |
+| [L-02](#L02) | Missing boundries for _maxDIVARewardUSD in DIVAOracleTellor                                      | Low           | Resolved |
+| [L-03](#L03) | Fee-on-transfer tokens will get stuck in Development Fund                                        | Low           | Resolved |
+| [L-04](#L04) | Wrong implementation of EIP-2535 in `LibDiamond` library                                         | Low           | Resolved |
+| [L-05](#L05) | Missing important data in events                                                                 | Low           | Resolved |
+| [L-06](#L06) | Don't allow setting owner to address(0) in `DIVAOwnershipSecondary`                              | Low           | Resolved |
+| [L-07](#L07) | Add a minimum deposit amount in `DIVADevelopmentFund`                                            | Low           | Resolved |
+| [L-08](#L08) | Missing possibility of removing deposits that are fully paid in DIVADevelopmentFund              | Low           | Resolved |
+| [L-09](#L09) | DiamondCutFacet should close the Diamond after getting called                                    | Low           | Resolved |
+| [L-10](#L10) | Neither the long nor the short token can be conditionally burned                                 | Low           | Resolved |
+| [L-11](#L11) | Trapped ETH in the Diamond contract                                                              | Low           | Resolved |
+| [I-01](#I01) | Missing validation on deployment of DIVAOracleTellor                                             | Informational | Resolved |
+| [I-02](#I02) | Pragma version                                                                                   | Informational | Resolved |
+| [I-03](#I03) | Use specific imports instead of just a global import in DIVAOracleTellor                         | Informational | Resolved |
+| [I-04](#I04) | Useless `require` statement at `_diamondCut` function                                            | Informational | Resolved |
+| [I-05](#I05) | Missing function to query for `_permissionedPositionTokenImplementation` in PositionTokenFactory | Informational | Resolved |
+| [I-06](#I06) | Add missing variable checks in constructor                                                       | Informational | Resolved |
+| [I-07](#I07) | Consider resetting values after a new Owner has claimed the ownership in DIVAOwnershipMain       | Informational | Resolved |
+| [I-08](#I08) | Missing NatSpec @inheritdoc in implementations                                                   | Informational | Resolved |
+| [I-09](#I09) | Change immutable to constant if a fixed value is used                                            | Informational | Resolved |
+| [I-10](#I10) | Missing NatSpec in diva-contracts Interfaces                                                     | Informational | Resolved |
+| [I-11](#I11) | Misleading Typo in comment                                                                       | Informational | Resolved |
 
 
-## <a id="Critical"></a>Critical
+## <a id="High"></a> High
 
-### <a id="C01"></a> C-01 Wrong implementation of EVMCall in DIVAOwnershipSecondary
+### <a id="H01"></a> H-01 Wrong implementation of EVMCall in DIVAOwnershipSecondary
 https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/DIVAOwnershipSecondary.sol#L113
 
 #### Summary
@@ -215,15 +215,12 @@ Follow the Tellor Data Specifications for the EVMCall and change the function to
                 );
 ```
 
-#### Resolution
+
 
 
 -----------------
 
-
-## <a id="High"></a> High
-
-### <a id="H01"></a> H-01 Funds could be stuck in DIVADevelopmentFund
+### <a id="H02"></a> H-02 Funds could be stuck in DIVADevelopmentFund
 https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/DIVADevelopmentFund.sol#LL43C54-L43C54
 https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/DIVADevelopmentFund.sol#L61
 
@@ -269,8 +266,6 @@ see coded POC [here](https://gist.github.com/zaskoh/296a826902b2e9ceb0d2a8d7d5ad
 * check if the value of `_releasePeriodInSeconds` is zero and send the deposit directly to the contract, or change `<` to `<=` to the invariant on the withdraw function loop.
 
 * The deposit should also check for reasonably maximum _releasePeriodInSeconds  like <= 30 years (as 30-year period was mentioned in the docs) to avoid funds getting stuck due to an unreasonable long _releasePeriodInSeconds
-
-#### Resolution
 
 
 -----------------
@@ -338,31 +333,10 @@ _allocateFeeClaim(
 );
 ```
 
-#### Resolution
 
 
-### <a id="M02"></a> M-02 Neither the long nor the short token can be conditionally burned
-https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/libraries/LibDIVA.sol#L546
-https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/libraries/LibDIVA.sol#L550
 
-#### Summary
-Neither long nor short token can be conditionally burn since `ERC20#_mint` would revert on zero address.
-
-#### Description
-The documentation under [createcontingentpool](https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/DOCUMENTATION.md#createcontingentpool) states that for `longRecipient`  or `shortRecipient` a user can choose the zero address to enable conditional burn use cases.
-
-> Address that shall receive the long position token. Zero address is a valid input to enable conditional burn use cases.
-
-However, Any call to [ERC20#_mint](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol#L251) with zero address as the recipient would revert, there is no viable means to conditionally burn one side of the token since they cannot be transferred to address(0) as well.
-This leads to discrepancy between the documentation and it's implementation.
-
-#### Recommendation
-* Overwrite _mint() and allow minting to address(0)
-
-#### Resolution
-
-
-### <a id="M03"></a> M-03 PreviousFallbackDataProvider won't have incentive to provide accurate value
+### <a id="M02"></a> M-02 PreviousFallbackDataProvider won't have incentive to provide accurate value
 https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/facets/SettlementFacet.sol#L487
 
 #### Summary
@@ -398,10 +372,10 @@ _confirmFinalReferenceValue(
                 );
 ```
 
-#### Resolution
 
 
-### <a id="M04"></a> M-04 Fee-on-Transfer tokens used as collateral will make a pool undercollateralized
+
+### <a id="M03"></a> M-03 Fee-on-Transfer tokens used as collateral will make a pool undercollateralized
 https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/libraries/LibDIVA.sol#L475-L490
 
 #### Summary
@@ -423,17 +397,17 @@ Describe explicitly in the documentation if fee-on-transfer tokens are allowed a
 
 Even if fee-on-transfer tokens are not supported, it's a best practice to change the code to check if the amount of `collateralToken` received is the same as expected before minting the S/L tokens. With this check, it's not possible to create a new pool or add liquidity to a pool if the fee-on-transfer was just activated. 
 
-#### Resolution
 
 
-### <a id="M05"></a> M-05 DoS in `_calcPayoffs` function when calculating big numbers
+
+### <a id="M04"></a> M-04 DoS in `_calcPayoffs` function when calculating big numbers
 https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/libraries/LibDIVA.sol#L421-L430
 
 #### Summary
 The `_calcPayoffs` function reverts everytime is called with `_finalReferenceValue` >= `2e59` and `cap` > `_finalReferenceValue`.
 
 #### Description
-In `LibDIVA` library, the `_calcPayoffs` function calculates the final payout for the short and long token holders depending of the `finalReferenceValue` provided by the data provider. This function is called from `_setPayoutAmount`, that is called by `_confirmFinalReferenceValue` that is the function called when the data provider sets the final reference value. 
+In `LibDIVA` library, the `_calcPayoffs` function calculates the final payout for the short and long token holders deResolved of the `finalReferenceValue` provided by the data provider. This function is called from `_setPayoutAmount`, that is called by `_confirmFinalReferenceValue` that is the function called when the data provider sets the final reference value. 
 
 The issue is that when this function is called for a pool with a `finalReferenceValue` >= `2e59` and `cap` > `finalReferenceValue`, the function will always revert causing a DoS. 
 
@@ -453,29 +427,6 @@ https://gist.github.com/santipu03/ad81055d2698382fbf812315ef548ccb
 The protocol has 2 options:
  - Before creating a pool, set a limit for the `cap` value so that this situation cannot happen. 
  - Warn users in the docuentation or website about the danger of setting large numbers in the pool. 
-
-#### Resolution
-
-
-### <a id="M06"></a> M-06 Trapped ETH in the Diamond contract
-https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/Diamond.sol#L191
-
-#### Summary
-The `receive` function in the Diamond contract can lead to trapped ETH because there's no way to withdraw it from the contract. 
-
-#### Description
-In the `Diamond` contract, there's a `receive` function that allows the direct transfer of ETH to the contract. 
-
-If a user transfer ETH directly to the contract by accident, it will be stuck there forever because there's no function in the contract that allows to withdraw ETH from there. Given that the `Diamond` contract will remove the upgradability just after deployment, all the ETH sent to the contract by accident will be trapped forever.  
-
-#### Recommendation
-Remove the `receive` function from the `Diamond` contract. 
-
-```diff
--receive() external payable {}
-```
-
-#### Resolution
 
 
 -----------------
@@ -623,6 +574,44 @@ Currently in the deployment scripts the Diamond contract is only closed on the m
 Automatically close the Diamond proxy after the first call to `DiamondCutFacet.diamondCut` inside that function.
 
 -----------------
+
+
+### <a id="L10"></a> L-10 Neither the long nor the short token can be conditionally burned
+https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/libraries/LibDIVA.sol#L546
+https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/libraries/LibDIVA.sol#L550
+
+#### Summary
+Neither long nor short token can be conditionally burn since `ERC20#_mint` would revert on zero address.
+
+#### Description
+The documentation under [createcontingentpool](https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/DOCUMENTATION.md#createcontingentpool) states that for `longRecipient`  or `shortRecipient` a user can choose the zero address to enable conditional burn use cases.
+
+> Address that shall receive the long position token. Zero address is a valid input to enable conditional burn use cases.
+
+However, Any call to [ERC20#_mint](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol#L251) with zero address as the recipient would revert, there is no viable means to conditionally burn one side of the token since they cannot be transferred to address(0) as well.
+This leads to discrepancy between the documentation and it's implementation.
+
+#### Recommendation
+* Overwrite _mint() and allow minting to address(0)
+
+
+### <a id="L11"></a> L-11 Trapped ETH in the Diamond contract
+https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/Diamond.sol#L191
+
+#### Summary
+The `receive` function in the Diamond contract can lead to trapped ETH because there's no way to withdraw it from the contract. 
+
+#### Description
+In the `Diamond` contract, there's a `receive` function that allows the direct transfer of ETH to the contract. 
+
+If a user transfer ETH directly to the contract by accident, it will be stuck there forever because there's no function in the contract that allows to withdraw ETH from there. Given that the `Diamond` contract will remove the upgradability just after deployment, all the ETH sent to the contract by accident will be trapped forever.  
+
+#### Recommendation
+Remove the `receive` function from the `Diamond` contract. 
+
+```diff
+-receive() external payable {}
+```
 
 ## <a id="Informational"></a> Informational
 

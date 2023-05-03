@@ -31,12 +31,12 @@ Notice that the examined smart contracts are not resistant to external/internal 
 | Audit Methodology | Static Analysis, Manual Review |
 
 
-| Vulnerability Level | Total | Pending | Declined | Acknowledged | Partially Resolved | Resolved |
+| Vulnerability Level | Total | Resolved | Declined | Acknowledged | Partially Resolved | Resolved |
 |---------------------|-------|---------|----------|--------------|--------------------|----------|
-| [Critical](#Critical)| 1     | 1       | 0        | 0            | 0                  | 0        |
-| [High](#High)        | 3     | 3       | 0        | 0            | 0                  | 0        |
+| [Critical](#Critical)| 0     | 0       | 0        | 0            | 0                  | 0        |
+| [High](#High)        | 2     | 2       | 0        | 0            | 0                  | 0        |
 | [Medium](#Medium)    | 2     | 2       | 0        | 0            | 0                  | 0        |
-| [Low](#Low)          | 2     | 2       | 0        | 0            | 0                  | 0        |
+| [Low](#Low)          | 4     | 4       | 0        | 0            | 0                  | 0        |
 
 # Audit Scope & Methodology
 
@@ -70,22 +70,21 @@ The auditing process pays special attention to the following considerations:
 
 | ID           | Title                                                                                                                                                        | Category          | Severity | Status  |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- | -------- | ------- |
-| [C-01](#C01) | Round-down calculation is used to calculate the `_collateralAmountRemovedNetMaker` which can be abused by taker to take all the removed liquidity from maker | Steal fund        | CRITICAL | Pending |
-| [H-01](#H01) | Incorrect treasury is used for fee allocation when removing liquidity                                                                                        | Lose fee         | HIGH     | Pending |
-| [H-02](#H02) | The position token (long/short token) can't be minted for the address(0)                                                                                     | Logic error       | HIGH     | Pending |
-| [H-03](#H03) | `_createContingentPoolLib` is suspicious of the reorg attack                                                                                                 | Steal fund        | HIGH     | Pending |
-| [M-01](#M01) | Transferring a zero value amount may revert when creating a pool                                                                                             | Token integration | MEDIUM   | Pending |
-| [M-02](#M02) | Lack of support for Fee-on-Transfer tokens                                                                                                                   | Token integration | MEDIUM   | Pending |
-| [L-01](#L01) | Redundant requirement when requiring the `collateralAmount > 1e6` when creating a pool.                                                                      | Validation        | LOW      | Pending |
-| [L-01](#L02) | Redundant check `block.timestamp > submissionEndTime` | Validation | LOW | Pending |
+| [H-01](#H01) | Round-down calculation is used to calculate the `_collateralAmountRemovedNetMaker` which can be abused by taker to take all the removed liquidity from maker | Steal fund        | HIGH | Resolved |
+| [H-02](#H02) | `_createContingentPoolLib` is suspicious of the reorg attack                                                                                                 | Steal fund        | HIGH     | Resolved |
+| [M-01](#M01) | Lack of support for Fee-on-Transfer tokens                                                                                                                   | Token integration | MEDIUM   | Resolved | 
+[M-02](#M02) | Incorrect treasury is used for fee allocation when removing liquidity                                                                                        | Lose fee         | MEDIUM     | Resolved |
+| [L-01](#L01) | Redundant requirement when requiring the `collateralAmount > 1e6` when creating a pool.                                                                      | Validation        | LOW      | Resolved |
+| [L-02](#L02) | Redundant check `block.timestamp > submissionEndTime` | Validation | LOW | Resolved |
+[L-03](#L03) | The position token (long/short token) can't be minted for the address(0)                                                                                     | Logic error       | LOW     | Resolved |
+| [L-04](#L04) | Transferring a zero value amount may revert when creating a pool                                                                                             | Token integration | LOW   | Resolved |
 
 
 
+## <a id="High"></a> High
 
-## <a id="Critical"></a>Critical
 
-
-### <a id="C01"></a> C-01 Round-down calculation is used to calculate the `_collateralAmountRemovedNetMaker` which can be abused by taker to take all the removed liquidity from maker
+### <a id="H01"></a> H-01 Round-down calculation is used to calculate the `_collateralAmountRemovedNetMaker` which can be abused by taker to take all the removed liquidity from maker
 
 https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibEIP712.sol#L855-L857
 
@@ -105,58 +104,11 @@ Taker can take all of the maker's returned collateral.
 Consider calculating the collateral returned for the taker first. The remaining amount will be returned to the maker.
 
 
-#### Resolution: 
-
-
-
 ----
 
 
-## <a id="High"></a> High
 
-### <a id="H01"></a> H-01 Incorrect treasury is used for fee allocation when removing liquidity
-
-https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L780-L785
-
-#### Description:
-In the function LibDIVA._removeLiquidityLib(), the fee is allocated for LibDIVAStorage._governanceStorage().treasury instead of the current treasury which is fetched by calling LibDIVA._getCurrentTreasury(). This may be the new treasury that has not yet passed the activation time.
-
-#### Impact 
-Since the protocol is fully decentralized, with the owner determined through a voting mechanism, the previous owner may experience a significant loss due to incorrect fee allocation for a period of two days.
-
-
-#### Recommendation:
-Modify lines [780->785](https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L780-L785) as follows: 
-```soldiity=
- _allocateFeeClaim(
-    _removeLiquidityParams.poolId,
-    _pool,
-    _getCurrentTreasury(gs), /// change here 
-    _protocolFee
-);
-```
-
-
-#### Resolution: 
-
-### <a id="H02"></a> H-02 The position token (long/short token) can't be minted for the address(0)
-
-https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L546-L553
-https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L670-L677
-
-#### Description:
-Functions `createContingentPool` and `addLiquidity()` consider `longRecipient = 0x` or `shortRecipient = 0x` as valid inputs to enable conditional burn use cases as per the docs:
-![](https://i.imgur.com/VhuWE18.png)
-![](https://i.imgur.com/sXCHtzA.png)
-
-Both functions use the `IPositionToken(_shortToken).mint()` function to mint long/short tokens for the recipient. However, the PositionToken contract inherits from [ERC20.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol) in the OpenZeppelin library, which will [revert](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/cf86fd9962701396457e50ab0d6cc78aa29a5ebc/contracts/token/ERC20/ERC20.sol#L252) if the minted address is `address(0)`. This will break the intended behavior of the protocol.
-
-#### Recommendation:
-Consider minting for the `0xdead` instead of `0x` in case of conditional burn. 
-
-#### Resolution: 
-
-### <a id="H03"></a> H-03 `_createContingentPoolLib` is suspicious of the reorg attack
+### <a id="H02"></a> H-02 `_createContingentPoolLib` is suspicious of the reorg attack
 
 #### Description:
 The `_createContingentPoolLib` function creates a new pool and determines their ids using the counter `ps.poolId`. At the same time, block reorg may happen on any blockchain, especially with some sidechain like Polygon, Optimism, ...
@@ -187,29 +139,13 @@ After the reorg
 #### Recommendation:
 Determine the pool id as hash of the `_createPoolParams` and the creator's address. 
 
-#### Resolution: 
+
 
 ## <a id="Medium"></a> Medium
 
-### <a id="M01"></a> M-01 Transferring a zero value amount may revert when creating a pool 
 
-https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L476-L480
-https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L645-L649
 
-#### Description:
-When working with ERC20 tokens, some tokens (such as LEND) [revert when transferring a zero value amount](https://github.com/d-xo/weird-erc20#revert-on-zero-value-transfers). However, the function `LibDIVA._createContingentPoolLib` always transfers an amount of collateral tokens equal to `_createPoolParams.collateralAmountMsgSender`, even when this value is equal to zero (indicating that msg.sender does not wish to transfer any tokens to create the pool). 
-
-Note that there can be a situation when an user wants to make a new pool without transferring any tokens. It happens when a maker creates an EIP712 offer in which the taker will be the one who transfers all the funds to the pool (the amount that the taker transfers must be > 1e6). In this case, the create transaction will revert. 
-
-#### Impact:
-Users are unable to create a pool using certain collateral tokens without transferring any tokens.
-
-#### Recommendation:
-Just execute a transfer if `amount > 0`.
-
-#### Resolution: 
-
-### <a id="M02"></a> M-02 Lack of support for Fee-on-Transfer tokens 
+### <a id="M01"></a> M-01 Lack of support for Fee-on-Transfer tokens 
 
 https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L475-L515
 
@@ -222,7 +158,29 @@ Assume that the collateral token is a deflationary token, when a user transfers 
 #### Recommendation:
 Calculate the actual amount of receive token by calculating the difference of the token's balance before and after the transfer is excuted. 
 
-#### Resolution: 
+
+### <a id="M02"></a> M-02 Incorrect treasury is used for fee allocation when removing liquidity
+
+https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L780-L785
+
+#### Description:
+In the function LibDIVA._removeLiquidityLib(), the fee is allocated for LibDIVAStorage._governanceStorage().treasury instead of the current treasury which is fetched by calling LibDIVA._getCurrentTreasury(). This may be the new treasury that has not yet passed the activation time.
+
+#### Impact 
+Since the protocol is fully decentralized, with the owner determined through a voting mechanism, the previous owner may experience a significant loss due to incorrect fee allocation for a period of two days.
+
+
+#### Recommendation:
+Modify lines [780->785](https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L780-L785) as follows: 
+```soldiity=
+ _allocateFeeClaim(
+    _removeLiquidityParams.poolId,
+    _pool,
+    _getCurrentTreasury(gs), /// change here 
+    _protocolFee
+);
+```
+
 
 -----------------
 
@@ -240,7 +198,7 @@ When creating a pool, the function `LibDiva._validateInputParamsCreateContingent
 #### Recommendation:
 Remove the requirement if not necessary. 
 
-#### Resolution: 
+
 
 ### <a id="L02"></a> L-02 Redundant check `block.timestamp > submissionEndTime`
 
@@ -252,7 +210,39 @@ In the previous `if` block, it has a check whether `block.timestamp <= submissio
 #### Recommendation:
 Remove the condition. 
 
-#### Resolution: 
+
+### <a id="L03"></a> L-03 The position token (long/short token) can't be minted for the address(0)
+
+https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L546-L553
+https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L670-L677
+
+#### Description:
+Functions `createContingentPool` and `addLiquidity()` consider `longRecipient = 0x` or `shortRecipient = 0x` as valid inputs to enable conditional burn use cases as per the docs:
+![](https://i.imgur.com/VhuWE18.png)
+![](https://i.imgur.com/sXCHtzA.png)
+
+Both functions use the `IPositionToken(_shortToken).mint()` function to mint long/short tokens for the recipient. However, the PositionToken contract inherits from [ERC20.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol) in the OpenZeppelin library, which will [revert](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/cf86fd9962701396457e50ab0d6cc78aa29a5ebc/contracts/token/ERC20/ERC20.sol#L252) if the minted address is `address(0)`. This will break the intended behavior of the protocol.
+
+#### Recommendation:
+Consider minting for the `0xdead` instead of `0x` in case of conditional burn. 
+
+
+
+### <a id="L04"></a> L-04 Transferring a zero value amount may revert when creating a pool 
+
+https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L476-L480
+https://github.com/GuardianAudits/DivaAudit/blob/5d0c7f6d854b65c2f723ac6bceea6bbd4edef37e/diva-contracts/contracts/libraries/LibDIVA.sol#L645-L649
+
+#### Description:
+When working with ERC20 tokens, some tokens (such as LEND) [revert when transferring a zero value amount](https://github.com/d-xo/weird-erc20#revert-on-zero-value-transfers). However, the function `LibDIVA._createContingentPoolLib` always transfers an amount of collateral tokens equal to `_createPoolParams.collateralAmountMsgSender`, even when this value is equal to zero (indicating that msg.sender does not wish to transfer any tokens to create the pool). 
+
+Note that there can be a situation when an user wants to make a new pool without transferring any tokens. It happens when a maker creates an EIP712 offer in which the taker will be the one who transfers all the funds to the pool (the amount that the taker transfers must be > 1e6). In this case, the create transaction will revert. 
+
+#### Impact:
+Users are unable to create a pool using certain collateral tokens without transferring any tokens.
+
+#### Recommendation:
+Just execute a transfer if `amount > 0`.
 
 ____
 

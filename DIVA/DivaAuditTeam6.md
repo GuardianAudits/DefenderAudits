@@ -31,10 +31,10 @@ Notice that the examined smart contracts are not resistant to external/internal 
 | Audit Methodology | Static Analysis, Manual Review |
 
 
-| Vulnerability Level | Total | Pending | Declined | Acknowledged | Partially Resolved | Resolved |
+| Vulnerability Level | Total | Resolved | Declined | Acknowledged | Partially Resolved | Resolved |
 |---------------------|-------|---------|----------|--------------|--------------------|----------|
 | [Critical](#Critical)| 0     | 0       | 0        | 0            | 0                  | 0        |
-| [High](#High)        | 2     | 2       | 0        | 0            | 0                  | 0        |
+| [High](#High)        | 0     | 0       | 0        | 0            | 0                  | 0        |
 | [Medium](#Medium)    | 2     | 2       | 0        | 0            | 0                  | 0        |
 | [Low](#Low)          | 2     | 2       | 0        | 0            | 0                  | 0        |
 
@@ -71,20 +71,18 @@ The auditing process pays special attention to the following considerations:
 
 | ID      | Title                                                                                     | Category            | Severity | Status  |
 |-------|-------------------------------------------------------------------------------------------|---------------------|----------|---------|
-| [H-01](#H01)  | Receiver of settlement fee can be wrong in certain condition if fallback data provider executing `setFinalReferenceValue()`                                     | Logic Error                 | HIGH     | Pending |
-| [H-02](#H02)  | Receiver of treasury fee can be wrong in certain condition if remove liquidity function is executed                                                        | Logic Error         | HIGH     | Pending |
-| [M-01](#M01)  | Offer Taker using EIP712 can't remove his liquidity via valid `fillOfferRemoveLiquidity()` in certain case with ERC20 collateral with blacklist | DOS   | MEDIUM   | Pending |
-| [M-02](#M02)  | Diva new owner can effectively have access to `DivaDevelopmentFund` `withdraw()` and ` withdrawDirectDeposit()` right after elected.                                                      | Centralization Risk         | MEDIUM   | Pending |
-| [L-01](#L01)  | unpauseReturnCollateral() will extend pause delay time even when it already unpaused                                                                               | Centralization risk | LOW      | Pending |
-| [L-02](#L02)  | Griefer can challenge final reference value and prolonged the settlement process                                                                               | DOS | LOW      | Pending |
+| [M-01](#M01)  | Receiver of settlement fee can be wrong in certain condition if fallback data provider executing `setFinalReferenceValue()`                                     | Logic Error                 | MEDIUM     | Resolved |
+| [M-02](#M02)  | Receiver of treasury fee can be wrong in certain condition if remove liquidity function is executed                                                        | Logic Error         | MEDIUM     | Resolved |
+| [L-01](#L01)  | unpauseReturnCollateral() will extend pause delay time even when it already unpaused                                                                               | Centralization risk | LOW      | Resolved |
+| [L-02](#L02)  | Griefer can challenge final reference value and prolonged the settlement process                                                                               | DOS | LOW      | Resolved |
 
 
 
 
 
-## <a id="High"></a> High
+## <a id="Medium"></a> Medium
 
-### <a id="H01"></a> H-01 Receiver of settlement fee can be wrong in certain condition if fallback data provider executing `setFinalReferenceValue()` 
+### <a id="M01"></a> M-01 Receiver of settlement fee can be wrong in certain condition if fallback data provider executing `setFinalReferenceValue()` 
 
 https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/facets/GovernanceFacet.sol#L165-L169
 
@@ -163,11 +161,8 @@ Update the parameter inside `_confirmFinalReferenceValue()` using value from `Li
 
 
 
-#### Resolution:
 
-
-
-### <a id="H02"></a> H-02 Receiver of treasury fee can be wrong in certain condition if remove liquidity function is executed 
+### <a id="M02"></a> M-02 Receiver of treasury fee can be wrong in certain condition if remove liquidity function is executed 
 
 https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/libraries/LibDIVA.sol#L780-L785
 
@@ -238,74 +233,6 @@ Use the valid treasury inside `_removeLiquidityLib()` :
 ```
 
 
-
-#### Resolution:
-
-
------------------
-
-
-
-## <a id="Medium"></a> Medium
-
-
-
-### <a id="M01"></a> M-01 Offer Taker using EIP712 can't remove his liquidity via valid `fillOfferRemoveLiquidity()` in certain case with ERC20 collateral with blacklist
-
-https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/libraries/LibEIP712.sol#L859-L863
-
-
-#### Description:
-
-When maker create an EIP712 signature of `OfferRemoveLiquidity`, taker should be able to remove his liquidity via calling `fillOfferRemoveLiquidity()`. However, in certain case, if used collateral  have blacklist mechanism and the maker is blacklisted after the taker take the offer, he can't execute the `fillOfferRemoveLiquidity()`, because the transfer collateral to the maker will fail : 
-
-https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/libraries/LibEIP712.sol#L859-L863
-
-```solidity=
-        LibDIVA._returnCollateral(
-            _pool,
-            _offerRemoveLiquidity.maker,
-            _collateralAmountRemovedNetMaker
-        );
-```
-
-Consider this scenario, taker create the offer because he see that the maker also have EIP712 signature of `OfferRemoveLiquidity` in case the taker want to remove his liquidity from the Offer.
-
-But the taker can't remove liquidity via EIP712 signature of `OfferRemoveLiquidity` now since the maker is blacklisted from the ERC20 collateral.
-
-
-
-#### Recommendation:
-
-Consider have separate state to track the maker and taker EIP712 collateral amount and implement pull over push method.
-
-
-
-#### Resolution:
-
-### <a id="M02"></a> M-02 Diva new owner can effectively have access to `DivaDevelopmentFund` `withdraw()` and ` withdrawDirectDeposit()` right after elected.
-
-https://github.com/GuardianAudits/DivaAudit/blob/main/diva-contracts/contracts/DIVADevelopmentFund.sol
-
-
-#### Description:
-
-While Diva's new elected owner can make a change of protocol parameters (such as fee, treasuery, fallback data provider) and only take effect after certain time, the new elected owner can have access to `withdraw()` and ` withdrawDirectDeposit()` of `DivaDevelopmentFund` right after elected.
-
-This can potentially be issue if some malicious owner is elected, and there is no way to prevent it from accessing the funds.
-
-
-
-#### Recommendation:
-
-Consider to have some delay after the new elected owner to have access of `DivaDevelopmentFund` `withdraw()` and ` withdrawDirectDeposit()`, Also set some delay of every `withdraw()` and ` withdrawDirectDeposit()` call to have some safety measure.
-
-
-
-#### Resolution:
-
-
-
 -----------------
 
 
@@ -350,7 +277,7 @@ Consider make sure the protocol is in unpause state before updating the `gs.paus
 
 
 
-#### Resolution:
+
 
 ### <a id="L02"></a> L-02 Griefer can challenge final reference value and prolonged the settlement process.
 
@@ -389,7 +316,7 @@ Consider to add non zero minimal long and short token owned to initiate `challen
 
 
 
-#### Resolution:
+
 
 
 
