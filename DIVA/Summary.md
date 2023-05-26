@@ -129,7 +129,7 @@ The auditing process pays special attention to the following considerations:
 | [M-02](#M02) | PreviousFallbackDataProvider won't have incentive to provide accurate value                      | Medium        | Resolved |
 | [M-03](#M03) | Fee-on-Transfer tokens used as collateral will make a pool undercollateralized                   | Medium        | Resolved |
 | [M-04](#M04) | DoS in `_calcPayoffs` function when calculating big numbers                                      | Medium        | Resolved |
-| [M-05](#M05) | `_getActualTakerFillableAmount` Will Return `_takerCollateralAmount - _offerInfo.takerFilledAmount` Even If The Order Is Not Fillable | Logic | Medium | Resolved |
+| [M-05](#M05) | `_getActualTakerFillableAmount` Will Return `_takerCollateralAmount - _offerInfo.takerFilledAmount` Even If The Order Is Not Fillable | Medium | Resolved |
 
 
 ## <a id="High"></a> High
