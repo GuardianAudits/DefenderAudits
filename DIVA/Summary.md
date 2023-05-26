@@ -195,7 +195,11 @@ Follow the Tellor Data Specifications for the EVMCall and change the function to
                 );
 ```
 
+#### Remediation
 
+DIVA Protocol Team: Great unique finding! We'd like to highlight that if this error made it to production, the harm would be limited as Tellor reporters could have adopted the new query type. No user funds would have been at risk. Nonetheless, adhering to the proposed standard is the preferred approach.
+
+H-01 is remediated in commit [b9f8b75](https://github.com/divaprotocol/diva-protocol-v1/commit/b9f8b75f5c05b6bb6397e439e38b741fb8bee065).
 
 
 -----------------
@@ -248,6 +252,13 @@ see coded POC [here](https://gist.github.com/zaskoh/296a826902b2e9ceb0d2a8d7d5ad
 * The deposit should also check for reasonably maximum _releasePeriodInSeconds  like <= 30 years (as 30-year period was mentioned in the docs) to avoid funds getting stuck due to an unreasonable long _releasePeriodInSeconds
 
 
+#### Remediation
+
+DIVA Protocol Team: Remediated by requiring `_releasePeriodInSeconds` to be nonzero.
+
+H-02 is remediated in commit [715ba38](https://github.com/divaprotocol/diva-protocol-v1/commit/715ba38c90fd94b5cd2352725dc8aa0f78d4ff9b).
+
+
 -----------------
 
 
@@ -271,6 +282,13 @@ Taker can take all of the maker's returned collateral.
 
 #### Recommendation:
 Consider calculating the collateral returned for the taker first. The remaining amount will be returned to the maker.
+
+
+#### Remediation
+
+DIVA Protocol Team: Great unique finding! While it wouldn't be economically viable to execute this attack, we agree to fix it to avoid any sort of griefing attack.
+
+H-03 is remediated in commit [e9b2d2f](https://github.com/divaprotocol/diva-protocol-v1/commit/e9b2d2f5b959bd8ae7b9ce2b0e6beaeef1da9277)
 
 
 ----
@@ -307,6 +325,13 @@ After the reorg
 
 #### Recommendation:
 Determine the pool id as hash of the `_createPoolParams` and the creator's address. 
+
+
+#### Remediation
+
+DIVA Protocol Team: Very special and unique finding which helped us to better protect protocol users in the event of chain reorgs.
+
+H-04 is remediated in commits [5e81063](https://github.com/divaprotocol/diva-protocol-v1/commit/5e81063e72f3322e4ed34673d931478486059ae9) and [55a2187](https://github.com/divaprotocol/diva-protocol-v1/commit/55a21875a156c5a108e9060627c3231f4a11b83d).
 
 
 ----------
@@ -375,6 +400,12 @@ _allocateFeeClaim(
 ```
 
 
+#### Remediation
+
+DIVA Protocol Team: Good spot! We overlooked it when we updated the governance logic to introduce an activation delay. The impact would have been rather limited as the new treasury account would have received protocol fees two days earlier than expected. The purpose of the two-day delay for treasury updates was primarily to reduce the incentives for reporting incorrect owners on secondary chains. No user funds would have been at risk.
+
+M-01 is remediated in commit [cadb971](https://github.com/divaprotocol/diva-protocol-v1/commit/cadb9710a1c1b8c7c18799c2bdb93ffd313fb7d2).
+
 
 
 ### <a id="M02"></a> M-02 PreviousFallbackDataProvider won't have incentive to provide accurate value
@@ -413,6 +444,11 @@ _confirmFinalReferenceValue(
                 );
 ```
 
+#### Remediation
+
+DIVA Protocol Team: Same comment as for M-01, we overlooked it when we updated the governance logic. The impact would have been rather limited. We don't anticipate high TVL pools with a reputable data provider reaching a stage where the fallback data provider has to step in. In the unlikely event that such a scenario would have occured, the previous fallback provider could be incentivized through a direct payment to report the outcome. Additionally, it is worth noting that the fallback provider won't change too frequently.
+
+M-02 is remediated in commit [aeea04f](https://github.com/divaprotocol/diva-protocol-v1/commit/aeea04f2922748efc73b9027a3f76f040a3a2f08).
 
 
 
@@ -438,6 +474,12 @@ Describe explicitly in the documentation if fee-on-transfer tokens are allowed a
 
 Even if fee-on-transfer tokens are not supported, it's a best practice to change the code to check if the amount of `collateralToken` received is the same as expected before minting the S/L tokens. With this check, it's not possible to create a new pool or add liquidity to a pool if the fee-on-transfer was just activated. 
 
+
+#### Remediation
+
+DIVA Protocol Team: We agreed to block all fee-on- transfer tokens.
+
+M-03 is remediated in commit [43943cb](https://github.com/divaprotocol/diva-protocol-v1/commit/43943cbb4b144294ae3f9aca8d31f7f72d0f93d5).
 
 
 
@@ -470,6 +512,13 @@ The protocol has 2 options:
  - Warn users in the docuentation or website about the danger of setting large numbers in the pool. 
 
 
+#### Remediation
+
+DIVA Protocol Team: Very special finding that no one else spotted!
+
+M-04 is remediated in commit [6daaedb](https://github.com/divaprotocol/diva-protocol-v1/commit/6daaedbfe2511f6c2e648083875b4f0dcdb2f21c).
+
+
 -----------------
 
 
@@ -499,6 +548,13 @@ if (_makerCollateralAmount == 0 && _offerInfo.status != OfferStatus.FILLABLE) {
             return 0;
         }
 ```
+
+
+#### Remediation
+
+DIVA Protocol Team: Good finding that will help to avoid confusion for a certain class of offers. No user funds would have been at risk though.
+
+M-05 is remediated in commit [8064a66](https://github.com/divaprotocol/diva-protocol-v1/commit/8064a66a36478653677f9b18ce0849578a4ad9be).
 
 
 -----------------
