@@ -317,7 +317,7 @@ Consider adding a `maxTxGasPrice` property to the `Transaction` struct.
 
 #### Resolution:
 
-### <a id="C08"></a> H-08 Native tokens will be stuck in the PariFi forwarder if the transaction execution was not successful.
+### <a id="C08"></a> C-08 Native tokens will be stuck in the PariFi forwarder if the transaction execution was not successful.
 
 https://github.com/GuardianAudits/PariFiDefenderAudit/blob/main/src/PariFiForwarder.sol#L185
 
@@ -694,7 +694,7 @@ This means that the check on [line 395](https://github.com/GuardianAudits/PariFi
 Consider changing [line 654](https://github.com/GuardianAudits/PariFiDefenderAudit/blob/main/src/OrderManager.sol#L654) to the following:
 
 ```solidity
-if (_price > userPosition.avgPrice) {
+if (_price >= userPosition.avgPrice) {
 ```
 
 #### Resolution:

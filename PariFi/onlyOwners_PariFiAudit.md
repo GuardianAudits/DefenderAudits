@@ -445,7 +445,7 @@ function _liquidatePosition(bytes32 _positionId) internal {
     }
 ``` 
 
-The only check for liquidate a position is if it not in profit: `f (isProfit) revert LibError.LiquidationErrorNoLoss();` 
+The only check for liquidate a position is if it not in profit: `if (isProfit) revert LibError.LiquidationErrorNoLoss();` 
 So if the position is at loss but have not passed the liquidationThreshold, this means that `lossInCollateral > liquidationThreshold`, then the position is going to be liquidated but `lossInCollateral` amount is not going to get stuck in the contract.
 Imagine the following scenario:
 1. `market.liquidationThreshold` is set to 80% as in the tests.

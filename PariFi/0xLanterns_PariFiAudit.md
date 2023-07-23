@@ -90,12 +90,12 @@ The auditing process pays special attention to the following considerations:
 | [C-06](#C06)  | Losses get stuck in contract when position is closed.                                     | Logical Error                 | Critical     | Pending |
 | [C-07](#C07)  | Premature  closing of position even when in safe range.                                     | Logical Error                 | Critical     | Pending |
 | [H-01](#H01)  | Including fee in liquidation check casues premature liquidation.                                     | Logical Error                 | High     | Pending |
-| [H-02](#H03)  | First depositor can casue subsequent users to loose funds.                                                        | Race Condition         | High     | Pending |
+| [H-02](#H03)  | First depositor can cause subsequent users to lose funds.                                                        | Race Condition         | High     | Pending |
 | [H-03](#H03)  | Risk free trade by sandwiching market orders.                                                        | Race Condition         | High     | Pending |
 | [H-04](#H04)  | Attacker can frontrun fee distribution to steal yield from liquidity providers.                                                        | Race Condition         | High     | Pending |
 | [H-05](#H05)  | Missing deadline parameter causes loss of funds to users/Traders         | Input validation     | High | Pending
 | [H-06](#H06)  |  Incorrect Implementation of the `EIP-150` for meta transactions can lead to the Transactions always being `reverted` & `Gas grieving`| Logical Error         | High     | Pending |
-| [H-07](#H07)  |  Malicious Actors can Grieve the relayers|  Logical error       | High     | Pending |
+| [H-07](#H07)  |  Malicious Actors can grief the relayers|  Logical error       | High     | Pending |
 | [M-01](#M01)  | Frequent downtime with certain price feeds. | Logical Error   | Medium   | Pending |
 | [M-02](#M02)  | Missing checks for Min and Max answer in price feed.                                                     | Output Validation      | Medium   | Pending |
 | [M-03](#M03)  | Bad actor can grief honest user by preventing orders from being created.                                                     | Logic error         | Medium   | Pending |
@@ -185,7 +185,7 @@ And then the position will be deleted
 delete openPositions[_positionId];
 
 ```
-The user will loose some collateral + fees and have the position closed early. That collateral that they lost will also be locked in the contract forever. 
+The user will lose some collateral + fees and have the position closed early. That collateral that they lost will also be locked in the contract forever. 
 
 
 #### Recommendation:
@@ -364,7 +364,7 @@ Don't include liquidation fee and closing fee when checking if `lossInCollateral
 #### Resolution:
 
 
-### <a id="H02"></a> H-02 | First depositor can casue subsequent users to loose funds.   
+### <a id="H02"></a> H-02 | First depositor can cause subsequent users to lose funds.   
 
 https://github.com/GuardianAudits/PariFiDefenderAudit/blob/main/src/MarketVault.sol#L104
 
@@ -527,7 +527,7 @@ However, where the check is done after doesn't truly ensure the transaction was 
 - `3` ---> In a situation where the relayer wasn't aware he sent insufficient gas and the check fails, all the gas is consumed and the relayer doesn't get any gas refunded, thereby losing his/her money.
 
 #### Reccomendation.
-I recommend that since the developers want to ensure that the `relayer` has sent enough gas then the best way to go about it is ---> that the check should come before the external call is made in order to protect both the `relayer`s and the `users` from being grieved, while also ensuring that enough gas is sent to the external call as requested by the trader who signed the transaction with a desired `transaction.mingas`.
+I recommend that since the developers want to ensure that the `relayer` has sent enough gas then the best way to go about it is ---> that the check should come before the external call is made in order to protect both the `relayer`s and the `users` from being griefed, while also ensuring that enough gas is sent to the external call as requested by the trader who signed the transaction with a desired `transaction.mingas`.
 The `execute()` function should be re-written like this:
 ```solidity
     function execute(Transaction calldata transaction, bytes calldata signature, address feeToken)
@@ -564,7 +564,7 @@ This way it ensures that the relayer has sent enough gas, and if not their gas i
 
 
 
-### <a id="H07"></a> H-07 | Malicious Actors can Grieve the relayers.
+### <a id="H07"></a> H-07 | Malicious actors can grief the relayers.
 #### Lines of Reference.
 - https://github.com/GuardianAudits/PariFiDefenderAudit/blob/835c98b66fecfe072750c400ba3ac1b0f6a07ebd/src/PariFiForwarder.sol#L183
 #### Description.
@@ -1046,7 +1046,7 @@ Malicious relayers can simply replay traders' orders on a different chain where 
 #### Reccomendation.
 As specified by the [`EIP4337`](https://eips.ethereum.org/EIPS/eip-4337) standard to prevent replay attacks ... the signature should depend on `chain_ID`
 
-### <a id="M16"></a> M-16 | Centralization Risk (Add anything else you want here, try and keep it consise)
+### <a id="M16"></a> M-16 | Centralization Risk
 
 Below you will find a list of the centralization risk associated with this protocol: 
 
