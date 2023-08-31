@@ -28,7 +28,7 @@ Notice that the examined smart contracts are not resistant to external/internal 
 | Commit       | [835c98b](https://github.com/GuardianAudits/PariFiDefenderAudit/commit/835c98b66fecfe072750c400ba3ac1b0f6a07ebd) |
 
 
-| Delivery Date     | July 20th, 2023       |
+| Delivery Date     | August 31st, 2023       |
 |-------------------|--------------------------------|
 | Audit Methodology |Manual Review Static Analysis |
 
