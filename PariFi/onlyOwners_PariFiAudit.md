@@ -885,7 +885,7 @@ Update the `updateCumulativeFees` function to not consider the blocks while the 
 
 #### Resolution:
 
-### <a id="M077"></a> M-07 Users can decrease the entirety of their collateral leaving them unable to get their profits
+### <a id="M07"></a> M-07 Users can decrease the entirety of their collateral leaving them unable to get their profits
 #### Description:
 The system allows users to decrease the entirety of their collateral leaving them unable to close their position since they won't be able to pay the fees when they have 0 collateral.
 
