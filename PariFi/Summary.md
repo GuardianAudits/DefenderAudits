@@ -89,29 +89,29 @@ The auditing process pays special attention to the following considerations:
 | [C-06](#C06)  | Users will be liquidated even if they should not be.                                     | Logical Error                 | Critical     | Resolved |
 | [C-07](#C07)  | Accrued borrowing fees are incorrectly calculated.                                     | Logical Error                 | Critical     | Resolved |
 | [C-08](#C08)  | Liquidity providers can sandwich traders when taking profits to avoid losses.                                     | Logical Error                 | Critical     | Resolved |
-| [C-09](#C09)  | Fees should be updated before any other accounting is done.                                                        | Race Condition         | Critical     | Resolved |
-| [C-10](#C10)  | Losses get stuck in contract when position is closed.                                                        | Race Condition         | Critical     | Resolved |
-| [C-11](#C11)  | Users can avoid losing collateral when at a loss by decreasing position.                                                        | Race Condition         | Critical     | Resolved |
-| [H-01](#H01)  | An adversary can DoS orders creation in the order manager.        | Input validation     | High | Resolved
+| [C-09](#C09)  | Fees should be updated before any other accounting is done.                                                        | Logical Error         | Critical     | Resolved |
+| [C-10](#C10)  | Losses get stuck in contract when position is closed.                                                        | Logical Error         | Critical     | Resolved |
+| [C-11](#C11)  | Users can avoid losing collateral when at a loss by decreasing position.                                       | Logical Error         | Critical     | Resolved |
+| [H-01](#H01)  | An adversary can DoS orders creation in the order manager.        | Logical Error     | High | Resolved
 | [H-02](#H02)  | The order creation deadline is incorrectly checked. | Logical Error         | High     | Resolved |
-| [H-03](#H03)  | Cumulative fees should be updated before configuration values are changed by the admin. |  Logical error       | High     | Resolved |
+| [H-03](#H03)  | Cumulative fees should be updated before configuration values are changed by the admin. |  Logical Error       | High     | Resolved |
 | [H-04](#H04)  | Profitable positions that become undercollateralized after a fee is applied cannot be liquidated. | Logical Error   | High   | Resolved |
-| [H-05](#H05)  | Transaction EIP712 object is missing a deadline property.                                                     | Output Validation      | High   | Resolved |
-| [M-01](#M01)  | updatedAvgPrice doesnt allow users full control of decreasing their position                                                     | Logic error         | Medium   | Resolved |
-| [M-02](#M02)  | Users can decrease the entirety of their collateral leaving them unable to get their profits                                                     | Logic error         | Medium   | Resolved |
-| [M-03](#M03)  | Fees keep accumulating even if the protocol is paused.                                                     | Logic error         | Medium   | Resolved |
-| [M-04](#M04)  | Stock splits are not accounted for | Logic error         | Medium   | Resolved |
-| [M-05](#M05)  | Users can be gas-griefed by admin by setting an extremely high gasPremium.                                                     | Logic error         | Medium   | Resolved |
-| [M-06](#M06)  | Relayers can be gas-griefed.                                                     | Logic error         | Medium   | Resolved |
-| [M-07](#M07)  | Missing check for minimal collateral when the opening fee is reduced from provided collateral on order creation.                                                  | Logic error         | Medium   | Resolved |
-| [M-08](#M08)  | Missing check for minimal collateral when decreasing a position.                                                  | Logic error         | Medium   | Resolved |
-| [M-09](#M09)  | The protocol admin can break core functionalities resulting in the loss of funds.                                                      | Logic error         | Medium   | Resolved |
-| [M-10](#M10)  | Outdated Pyth prices used in PariFinace.                                                   | Access Control         | Medium   | Resolved |
-| [M-11](#M11)  | Keepers can liquidate when protocol is paused.                                                  | Logic Error         | Medium   | Resolved |
-| [M-12](#M12)  | Users will be charged fees when market is closed.                                                   | Logic Error         | Medium   | Resolved |
-[M-13](#M13)  | Attacker can sway price to the point of liquidation for users by manipulating liquidity.                                                   | Logic Error         | Medium   | Resolved |
-[M-14](#M14)  | Order can fail becasue fees are deducted between validation checks.                                                  | Centralization Risk         | Medium   | Resolved |
-| [M-15](#M15)  | Gas compensation for relayer does not consider the initial transaction gas cost.                                                  | Centralization Risk         | Medium   | Resolved |
+| [H-05](#H05)  | Transaction EIP712 object is missing a deadline property.                                                     | Missing Deadline      | High   | Resolved |
+| [M-01](#M01)  | updatedAvgPrice doesnt allow users full control of decreasing their position                                                     | Logical Error         | Medium   | Resolved |
+| [M-02](#M02)  | Users can decrease the entirety of their collateral leaving them unable to get their profits                                                     | Logical Error         | Medium   | Resolved |
+| [M-03](#M03)  | Fees keep accumulating even if the protocol is paused.                                                     | Logical Error         | Medium   | Resolved |
+| [M-04](#M04)  | Stock splits are not accounted for | Logical Error         | Medium   | Resolved |
+| [M-05](#M05)  | Users can be gas-griefed by admin by setting an extremely high gasPremium.                                                     | Logical Error         | Medium   | Resolved |
+| [M-06](#M06)  | Relayers can be gas-griefed.                                                     | Logical Error         | Medium   | Resolved |
+| [M-07](#M07)  | Missing check for minimal collateral when the opening fee is reduced from provided collateral on order creation.                                                  | Logical Error         | Medium   | Resolved |
+| [M-08](#M08)  | Missing check for minimal collateral when decreasing a position.                                                  | Logical Error         | Medium   | Resolved |
+| [M-09](#M09)  | The protocol admin can break core functionalities resulting in the loss of funds.                                                      | Logical Error         | Medium   | Resolved |
+| [M-10](#M10)  | Outdated Pyth prices used in PariFinace.                                                   | Outdated Prices        | Medium   | Resolved |
+| [M-11](#M11)  | Keepers can liquidate when protocol is paused.                                                  | Centralization         | Medium   | Resolved |
+| [M-12](#M12)  | Users will be charged fees when market is closed.                                                   | Fees         | Medium   | Resolved |
+[M-13](#M13)  | Attacker can sway price to the point of liquidation for users by manipulating liquidity.                                                   | Protocol Manipulation        | Medium   | Resolved |
+[M-14](#M14)  | Order can fail becasue fees are deducted between validation checks.                                                  | Logical Error         | Medium   | Resolved |
+| [M-15](#M15)  | Gas compensation for relayer does not consider the initial transaction gas cost.                                                  | Gas Remuneration         | Medium   | Resolved |
 |
 
 
