@@ -112,7 +112,7 @@ The auditing process pays special attention to the following considerations:
 [M-13](#M13)  | Attacker can sway price to the point of liquidation for users by manipulating liquidity.                                                   | Protocol Manipulation        | Medium   | Resolved |
 [M-14](#M14)  | Order can fail becasue fees are deducted between validation checks.                                                  | Logical Error         | Medium   | Resolved |
 | [M-15](#M15)  | Gas compensation for relayer does not consider the initial transaction gas cost.                                                  | Gas Remuneration         | Medium   | Resolved |
-|
+
 
 
 ## <a id="Critical"></a>Critical
